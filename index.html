@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tek Dürümcü Memo - Dijital Menü</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nOMdBmdd8ODc6g0f0YRT3LN7w128v55zEaGRHP9FMwgh9GWaOD8SM8gy505IIFLb807BF3JH94Dw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Top Announcement Bar / Alert -->
+  <div class="status-banner" id="status-banner">
+    <span class="status-dot"></span>
+    <span class="status-text" id="status-banner-text">Yükleniyor...</span>
+  </div>
+
+  <!-- Header Section -->
+  <header class="header">
+    <div class="header-container">
+      <div class="header-main">
+        <h1 class="brand-title">Tek Dürümcü Memo</h1>
+        <div class="brand-subtitle">
+          <div class="rating">
+            <i data-lucide="star" class="star-icon"></i>
+            <span>3.9 (2.6K)</span>
+          </div>
+          <span class="dot-separator">•</span>
+          <span class="cuisine-type" id="cuisine-text">Kebapçı</span>
+        </div>
+      </div>
+      
+      <!-- Top Action Controls -->
+      <div class="header-controls">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="control-btn" title="Temayı Değiştir">
+          <i data-lucide="sun" class="sun-icon"></i>
+          <i data-lucide="moon" class="moon-icon"></i>
+        </button>
+        
+        <!-- Language Selector -->
+        <div class="language-dropdown">
+          <button id="lang-btn" class="control-btn lang-select-btn">
+            <i data-lucide="languages"></i>
+            <span id="current-lang-code">TR</span>
+          </button>
+          <div class="language-menu" id="lang-menu">
+            <button data-lang="tr" class="lang-option active">Türkçe</button>
+            <button data-lang="en" class="lang-option">English</button>
+            <button data-lang="ru" class="lang-option">Русский</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Restaurant Info Grid -->
+    <div class="info-grid">
+      <a href="https://maps.google.com/?q=Nuhkuyusu+Cd+No:261+Uskudar+Istanbul" target="_blank" class="info-card">
+        <i data-lucide="map-pin"></i>
+        <div>
+          <h4 id="info-address-title">Adres</h4>
+          <p>Nuhkuyusu Cd No:261, Üsküdar</p>
+        </div>
+      </a>
+      
+      <div class="info-card">
+        <i data-lucide="clock"></i>
+        <div>
+          <h4 id="info-hours-title">Çalışma Saatleri</h4>
+          <p>08:00 - 04:00</p>
+        </div>
+      </div>
+
+      <a href="tel:02163437073" class="info-card">
+        <i data-lucide="phone"></i>
+        <div>
+          <h4 id="info-phone-title">Telefon</h4>
+          <p>(0216) 343 70 73</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Quick Action Links -->
+    <div class="quick-links">
+      <a href="https://maps.google.com/?q=Nuhkuyusu+Cd+No:261+Uskudar+Istanbul" target="_blank" class="quick-link-btn">
+        <i data-lucide="navigation"></i>
+        <span id="btn-route">Yol Tarifi</span>
+      </a>
+      <a href="tel:02163437073" class="quick-link-btn">
+        <i data-lucide="phone-call"></i>
+        <span id="btn-call">Ara</span>
+      </a>
+      <div class="order-dropdown-container">
+        <button id="order-btn" class="quick-link-btn highlight-btn">
+          <i data-lucide="shopping-bag"></i>
+          <span id="btn-order">Sipariş Ver</span>
+          <i data-lucide="chevron-down" class="chevron"></i>
+        </button>
+        <div class="order-menu" id="order-menu">
+          <a href="https://tgoyemek.com" target="_blank">tgoyemek.com</a>
+          <a href="https://yemeksepeti.com" target="_blank">yemeksepeti.com</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sticky Categories Section -->
+  <nav class="sticky-nav">
+    <div class="nav-container">
+      <!-- Search Input Container -->
+      <div class="search-box">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" id="search-input" placeholder="Ürün veya açıklama ara...">
+        <button id="clear-search" class="clear-btn" style="display: none;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Categories Tabs Slider -->
+      <div class="categories-tabs" id="categories-tabs">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Menu Grid -->
+  <main class="menu-container">
+    <div class="menu-grid" id="menu-grid">
+      <!-- Cards rendered dynamically -->
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <p>© 2026 Tek Dürümcü Memo. All rights reserved.</p>
+    <button id="admin-login-btn" class="admin-login-link">
+      <i data-lucide="lock"></i>
+      <span id="footer-admin-text">Yönetici Paneli</span>
+    </button>
+  </footer>
+
+  <!-- ================= MODALS & OVERLAYS ================= -->
+
+  <!-- Item Detail Modal -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-content item-detail-card">
+      <button class="close-modal-btn" id="close-detail-modal">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="detail-body">
+        <span class="detail-category" id="detail-category">Kategori</span>
+        <h2 class="detail-title" id="detail-title">Ürün Adı</h2>
+        <p class="detail-description" id="detail-description">Açıklama</p>
+        <div class="detail-footer">
+          <span class="detail-price" id="detail-price">0.00 TRY</span>
+          <span class="status-tag in-stock" id="detail-status">Mevcut</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Auth Modal -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-content auth-card">
+      <h2 id="auth-title">Yönetici Girişi</h2>
+      <p id="auth-desc" class="auth-subtitle">Değişiklik yapmak için PIN kodunuzu girin.</p>
+      <form id="auth-form">
+        <div class="form-group">
+          <input type="password" id="pin-input" maxlength="4" placeholder="••••" required autocomplete="current-password">
+        </div>
+        <div id="auth-error" class="error-msg" style="display: none;">Hatalı PIN Kodu!</div>
+        <div class="modal-actions">
+          <button type="button" id="cancel-auth" class="modal-btn secondary-btn">İptal</button>
+          <button type="submit" class="modal-btn primary-btn" id="btn-auth-submit">Giriş Yap</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard Modal (Full Screen Layout) -->
+  <div class="modal-overlay" id="admin-modal">
+    <div class="modal-content admin-dashboard">
+      <header class="admin-header">
+        <div class="admin-header-title">
+          <i data-lucide="settings" class="admin-icon"></i>
+          <h2 id="admin-title">Yönetici Paneli</h2>
+        </div>
+        <div class="admin-header-actions">
+          <button id="admin-qr-btn" class="admin-nav-btn highlight-btn">
+            <i data-lucide="qr-code"></i>
+            <span id="admin-btn-qr-view">QR Kod Üret</span>
+          </button>
+          <button id="admin-logout-btn" class="admin-nav-btn logout-btn">
+            <i data-lucide="log-out"></i>
+            <span id="admin-btn-logout">Çıkış</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Admin Tabs Navigation -->
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-admin-tab="products" id="admin-tab-products-btn">Ürünler</button>
+        <button class="admin-tab-btn" data-admin-tab="categories" id="admin-tab-categories-btn">Kategoriler</button>
+        <button class="admin-tab-btn" data-admin-tab="backup" id="admin-tab-backup-btn">Veri Aktarımı / Sıfırla</button>
+      </div>
+
+      <!-- Admin Tab: Products -->
+      <div class="admin-tab-content active" id="admin-tab-products">
+        <div class="admin-tab-header">
+          <button id="add-product-btn" class="add-btn">
+            <i data-lucide="plus"></i>
+            <span id="admin-btn-add-product">Yeni Ürün Ekle</span>
+          </button>
+        </div>
+        <div class="admin-list-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th id="th-name">Ürün Adı</th>
+                <th id="th-category">Kategori</th>
+                <th id="th-price">Fiyat</th>
+                <th id="th-status">Durum</th>
+                <th id="th-actions">İşlemler</th>
+              </tr>
+            </thead>
+            <tbody id="admin-products-list">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Admin Tab: Categories -->
+      <div class="admin-tab-content" id="admin-tab-categories">
+        <div class="admin-tab-header">
+          <button id="add-category-btn" class="add-btn">
+            <i data-lucide="plus"></i>
+            <span id="admin-btn-add-category">Yeni Kategori Ekle</span>
+          </button>
+        </div>
+        <div class="admin-list-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th id="th-cat-id">Kategori Kodu (ID)</th>
+                <th id="th-cat-name">Kategori Adı</th>
+                <th id="th-cat-actions">İşlemler</th>
+              </tr>
+            </thead>
+            <tbody id="admin-categories-list">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Admin Tab: Backup/Migration -->
+      <div class="admin-tab-content" id="admin-tab-backup">
+        <div class="backup-grid">
+          <div class="backup-card">
+            <i data-lucide="download" class="backup-card-icon"></i>
+            <h3 id="backup-export-title">Verileri Dışa Aktar</h3>
+            <p id="backup-export-desc">Tüm menüyü, fiyatları ve kategorileri yedeklemek için bir .json dosyası olarak indirin.</p>
+            <button id="export-json-btn" class="backup-btn primary-btn">
+              <i data-lucide="file-json"></i>
+              <span id="btn-export">Dışa Aktar (JSON)</span>
+            </button>
+          </div>
+
+          <div class="backup-card">
+            <i data-lucide="upload" class="backup-card-icon"></i>
+            <h3 id="backup-import-title">Verileri İçe Aktar</h3>
+            <p id="backup-import-desc">Daha önce indirdiğiniz bir .json dosyasını yükleyerek menüyü güncelleyin.</p>
+            <label for="import-file-input" class="backup-btn file-label">
+              <i data-lucide="file-up"></i>
+              <span id="btn-import-select">Dosya Seç ve Yükle</span>
+            </label>
+            <input type="file" id="import-file-input" accept=".json" style="display: none;">
+          </div>
+
+          <div class="backup-card danger-card">
+            <i data-lucide="refresh-ccw" class="backup-card-icon"></i>
+            <h3 id="backup-reset-title">Varsayılana Sıfırla</h3>
+            <p id="backup-reset-desc">Yapılan tüm değişiklikleri silerek menüyü orijinal haline döndürün.</p>
+            <button id="reset-db-btn" class="backup-btn danger-btn">
+              <i data-lucide="trash-2"></i>
+              <span id="btn-reset">Menüyü Sıfırla</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Edit Modal -->
+  <div class="modal-overlay" id="product-form-modal">
+    <div class="modal-content form-modal-card">
+      <button class="close-modal-btn" id="close-product-form-modal">
+        <i data-lucide="x"></i>
+      </button>
+      <h2 id="product-form-title">Ürün Düzenle</h2>
+      <form id="product-edit-form">
+        <input type="hidden" id="edit-product-id">
+        
+        <!-- Translation Tabs -->
+        <div class="form-tabs">
+          <button type="button" class="form-tab-btn active" data-form-lang="tr">Türkçe (TR)</button>
+          <button type="button" class="form-tab-btn" data-form-lang="en">English (EN)</button>
+          <button type="button" class="form-tab-btn" data-form-lang="ru">Русский (RU)</button>
+        </div>
+
+        <!-- Name Inputs -->
+        <div class="form-group lang-group" data-lang-group="tr">
+          <label for="product-name-tr">Ürün Adı (TR) *</label>
+          <input type="text" id="product-name-tr" required>
+        </div>
+        <div class="form-group lang-group" data-lang-group="en" style="display: none;">
+          <label for="product-name-en">Product Name (EN)</label>
+          <input type="text" id="product-name-en">
+        </div>
+        <div class="form-group lang-group" data-lang-group="ru" style="display: none;">
+          <label for="product-name-ru">Название (RU)</label>
+          <input type="text" id="product-name-ru">
+        </div>
+
+        <!-- Description Inputs -->
+        <div class="form-group lang-group" data-lang-group="tr">
+          <label for="product-desc-tr">Ürün Açıklaması (TR)</label>
+          <textarea id="product-desc-tr" rows="3"></textarea>
+        </div>
+        <div class="form-group lang-group" data-lang-group="en" style="display: none;">
+          <label for="product-desc-en">Product Description (EN)</label>
+          <textarea id="product-desc-en" rows="3"></textarea>
+        </div>
+        <div class="form-group lang-group" data-lang-group="ru" style="display: none;">
+          <label for="product-desc-ru">Описание (RU)</label>
+          <textarea id="product-desc-ru" rows="3"></textarea>
+        </div>
+
+        <!-- Category & Price -->
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="product-category-select" id="lbl-form-category">Kategori *</label>
+            <select id="product-category-select" required>
+              <!-- Loaded dynamically -->
+            </select>
+          </div>
+          <div class="form-group col">
+            <label for="product-price-input" id="lbl-form-price">Fiyat (TRY) *</label>
+            <input type="number" id="product-price-input" step="0.01" min="0" required>
+          </div>
+        </div>
+
+        <!-- Availability Toggle -->
+        <div class="form-group checkbox-group">
+          <label class="switch">
+            <input type="checkbox" id="product-active-checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+          <span id="lbl-form-active" class="checkbox-label">Ürün Stokta Mevcut</span>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="cancel-product-form" class="modal-btn secondary-btn">İptal</button>
+          <button type="submit" class="modal-btn primary-btn" id="btn-product-save">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Category Edit Modal -->
+  <div class="modal-overlay" id="category-form-modal">
+    <div class="modal-content form-modal-card">
+      <button class="close-modal-btn" id="close-category-form-modal">
+        <i data-lucide="x"></i>
+      </button>
+      <h2 id="category-form-title">Kategori Düzenle</h2>
+      <form id="category-edit-form">
+        <input type="hidden" id="edit-category-id-hidden">
+        
+        <div class="form-group" id="group-cat-id">
+          <label for="category-id-input">Kategori Kodu (Küçük harf, boşluksuz ID) *</label>
+          <input type="text" id="category-id-input" required placeholder="örnek: kebaplar">
+        </div>
+
+        <div class="form-group">
+          <label for="category-name-tr">Kategori Adı (TR) *</label>
+          <input type="text" id="category-name-tr" required>
+        </div>
+        <div class="form-group">
+          <label for="category-name-en">Category Name (EN)</label>
+          <input type="text" id="category-name-en">
+        </div>
+        <div class="form-group">
+          <label for="category-name-ru">Название категории (RU)</label>
+          <input type="text" id="category-name-ru">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="cancel-category-form" class="modal-btn secondary-btn">İptal</button>
+          <button type="submit" class="modal-btn primary-btn" id="btn-category-save">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- QR Code Modal -->
+  <div class="modal-overlay" id="qr-modal">
+    <div class="modal-content qr-card">
+      <button class="close-modal-btn" id="close-qr-modal">
+        <i data-lucide="x"></i>
+      </button>
+      <h2 id="qr-modal-title">QR Kod Üret</h2>
+      <p id="qr-modal-desc" class="qr-subtitle">Bu QR kodu yazdırıp masalara koyabilirsiniz.</p>
+      
+      <!-- Target URL Input -->
+      <div class="form-group qr-url-group">
+        <label for="qr-url-input" id="lbl-qr-url">Hedef URL</label>
+        <div class="qr-url-row">
+          <input type="url" id="qr-url-input" placeholder="https://example.com/menu">
+          <button type="button" id="btn-generate-qr" class="primary-btn">Üret</button>
+        </div>
+      </div>
+
+      <div class="qr-display-container">
+        <div id="qrcode"></div>
+      </div>
+      
+      <div class="modal-actions qr-actions">
+        <button type="button" id="download-qr-btn" class="modal-btn primary-btn">
+          <i data-lucide="download"></i>
+          <span id="btn-qr-download">QR Kod İndir (PNG)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="admin.js"></script>
+
+</body>
+</html>

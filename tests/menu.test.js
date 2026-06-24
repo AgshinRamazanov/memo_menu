@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert';
 import { DEFAULT_MENU_DATA } from '../data.js';
 import { getTranslation, checkIsOpen, state } from '../app.js';
-import { verifyPin, saveProduct, deleteProduct, toggleProductStatus } from '../admin.js';
+import { verifyPin, saveProduct, deleteProduct, toggleProductStatus, saveCategory, deleteCategory } from '../admin.js';
 
 test('DEFAULT_MENU_DATA structure validity', () => {
   assert.ok(DEFAULT_MENU_DATA.categories.length > 0);
@@ -117,4 +117,77 @@ test('deleteProduct deletes a product', () => {
   assert.strictEqual(state.menuData.items.length, initialLength - 1);
   const found = state.menuData.items.find(i => i.id === itemToDelete.id);
   assert.strictEqual(found, undefined);
+});
+
+test('saveCategory adds new and edits existing categories', () => {
+  const initialLength = state.menuData.categories.length;
+  
+  // Add category
+  const newCat = {
+    id: 'test-cat',
+    isEdit: false,
+    translations: {
+      tr: 'Test Kategori',
+      en: 'Test Category',
+      ru: 'Тест Категория'
+    }
+  };
+  
+  saveCategory(newCat);
+  
+  assert.strictEqual(state.menuData.categories.length, initialLength + 1);
+  const added = state.menuData.categories.find(c => c.id === 'test-cat');
+  assert.strictEqual(added.translations.tr, 'Test Kategori');
+  assert.strictEqual(added.translations.en, 'Test Category');
+
+  // Edit category
+  const updatedCat = {
+    id: 'test-cat',
+    isEdit: true,
+    translations: {
+      tr: 'Yeni Kategori',
+      en: 'New Category',
+      ru: 'Новая Категория'
+    }
+  };
+  
+  saveCategory(updatedCat);
+  
+  const edited = state.menuData.categories.find(c => c.id === 'test-cat');
+  assert.strictEqual(edited.translations.tr, 'Yeni Kategori');
+  assert.strictEqual(edited.translations.en, 'New Category');
+});
+
+test('deleteCategory deletes category and reassociates products to other', () => {
+  // Create a temporary category and assign a product to it
+  const tempCat = {
+    id: 'temp-cat',
+    isEdit: false,
+    translations: { tr: 'Geçici' }
+  };
+  saveCategory(tempCat);
+  
+  const tempProduct = {
+    category: 'temp-cat',
+    price: 100,
+    active: true,
+    translations: { tr: { name: 'Geçici Ürün', description: '' } }
+  };
+  saveProduct(tempProduct);
+  const addedProduct = state.menuData.items[state.menuData.items.length - 1];
+  assert.strictEqual(addedProduct.category, 'temp-cat');
+  
+  // Delete the category
+  deleteCategory('temp-cat');
+  
+  // Check category is gone
+  const foundCat = state.menuData.categories.find(c => c.id === 'temp-cat');
+  assert.strictEqual(foundCat, undefined);
+  
+  // Check product is reassigned to 'other'
+  const foundProduct = state.menuData.items.find(i => i.id === addedProduct.id);
+  assert.strictEqual(foundProduct.category, 'other');
+  
+  // Clean up
+  deleteProduct(addedProduct.id);
 });

@@ -52,6 +52,52 @@ export function toggleProductStatus(productId) {
   return item;
 }
 
+// Add or edit a category
+export function saveCategory(categoryData) {
+  const categories = state.menuData.categories;
+  const isEdit = categoryData.isEdit;
+
+  if (isEdit) {
+    // Edit existing category
+    const index = categories.findIndex(c => c.id === categoryData.id);
+    if (index !== -1) {
+      categories[index].translations = categoryData.translations;
+    }
+  } else {
+    // Add new category
+    categories.push({
+      id: categoryData.id,
+      translations: categoryData.translations
+    });
+  }
+
+  saveState();
+}
+
+// Delete a category and reassociate products
+export function deleteCategory(categoryId) {
+  state.menuData.categories = state.menuData.categories.filter(c => c.id !== categoryId);
+  
+  // Reassociate products
+  const hasItems = state.menuData.items.some(i => i.category === categoryId);
+  if (hasItems) {
+    const otherExists = state.menuData.categories.some(c => c.id === 'other');
+    if (!otherExists) {
+      state.menuData.categories.push({
+        id: 'other',
+        translations: { tr: 'Diğer', en: 'Other', ru: 'Другое' }
+      });
+    }
+    state.menuData.items.forEach(item => {
+      if (item.category === categoryId) {
+        item.category = 'other';
+      }
+    });
+  }
+
+  saveState();
+}
+
 // ================= DOM HANDLERS =================
 
 export function renderAdminProducts() {
@@ -127,6 +173,67 @@ export function renderAdminProducts() {
   });
 }
 
+export function renderAdminCategories() {
+  const tbody = document.getElementById('admin-categories-list');
+  if (!tbody) return;
+
+  const categories = state.menuData.categories;
+  const t = UI_STRINGS[state.lang];
+
+  let html = '';
+  categories.forEach(cat => {
+    const name = cat.translations[state.lang] || cat.translations['tr'] || cat.id;
+
+    html += `
+      <tr data-cat-row-id="${cat.id}">
+        <td style="font-family: monospace; font-weight: bold; color: var(--accent-color);">${cat.id}</td>
+        <td style="font-weight: 600;">${name}</td>
+        <td>
+          <div class="admin-action-btns">
+            <button class="action-icon-btn cat-edit-btn" data-cat-id="${cat.id}" title="Düzenle">
+              <i data-lucide="pencil"></i>
+            </button>
+            <button class="action-icon-btn cat-delete-btn" data-cat-id="${cat.id}" title="Sil">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  tbody.innerHTML = html;
+  lucide.createIcons();
+
+  // Attach Edit action listeners
+  tbody.querySelectorAll('.cat-edit-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = categories.find(c => c.id === btn.dataset.catId);
+      if (cat) {
+        showCategoryForm(cat);
+      }
+    });
+  });
+
+  // Attach Delete action listeners
+  tbody.querySelectorAll('.cat-delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const confirmMsg = state.lang === 'tr' 
+        ? 'Bu kategoriyi silmek istediğinize emin misiniz? Bu kategorideki tüm ürünler "Diğer" kategorisine aktarılacaktır.' 
+        : state.lang === 'ru' 
+        ? 'Вы уверены, что хотите удалить эту категорию? Все продукты из нее будут перемещены в категорию "Другое".' 
+        : 'Are you sure you want to delete this category? All products in it will be moved to the "Other" category.';
+      
+      if (confirm(confirmMsg)) {
+        deleteCategory(btn.dataset.catId);
+        renderAdminCategories();
+        renderMenuGrid();
+        renderCategoryTabs();
+      }
+    });
+  });
+}
+
 // Populate product select options in category field
 export function populateCategoryDropdown() {
   const select = document.getElementById('product-category-select');
@@ -194,9 +301,44 @@ function showProductForm(item = null) {
   modal.classList.add('show');
 }
 
-// Close product form modal
 function hideProductForm() {
   document.getElementById('product-form-modal').classList.remove('show');
+}
+
+// Display category add/edit modal form
+function showCategoryForm(cat = null) {
+  const modal = document.getElementById('category-form-modal');
+  const t = UI_STRINGS[state.lang];
+
+  if (cat) {
+    // Edit existing category
+    document.getElementById('category-form-title').innerText = t.formEditCategory;
+    document.getElementById('edit-category-id-hidden').value = cat.id;
+    
+    document.getElementById('category-id-input').value = cat.id;
+    document.getElementById('category-id-input').disabled = true; // Cannot edit code after creation
+    
+    document.getElementById('category-name-tr').value = cat.translations.tr || '';
+    document.getElementById('category-name-en').value = cat.translations.en || '';
+    document.getElementById('category-name-ru').value = cat.translations.ru || '';
+  } else {
+    // Add new category
+    document.getElementById('category-form-title').innerText = t.formAddCategory;
+    document.getElementById('edit-category-id-hidden').value = '';
+    
+    document.getElementById('category-id-input').value = '';
+    document.getElementById('category-id-input').disabled = false;
+    
+    document.getElementById('category-name-tr').value = '';
+    document.getElementById('category-name-en').value = '';
+    document.getElementById('category-name-ru').value = '';
+  }
+
+  modal.classList.add('show');
+}
+
+function hideCategoryForm() {
+  document.getElementById('category-form-modal').classList.remove('show');
 }
 
 // ================= LIFE CYCLE ATTACHMENT =================
@@ -228,6 +370,7 @@ if (typeof document !== 'undefined') {
       if (verifyPin(pinInput.value)) {
         authModal.classList.remove('show');
         renderAdminProducts();
+        renderAdminCategories();
         adminModal.classList.add('show');
       } else {
         authError.style.display = 'block';
@@ -244,6 +387,13 @@ if (typeof document !== 'undefined') {
         
         btn.classList.add('active');
         document.getElementById(`admin-tab-${btn.dataset.adminTab}`).classList.add('active');
+
+        // Draw tab content specifically
+        if (btn.dataset.adminTab === 'products') {
+          renderAdminProducts();
+        } else if (btn.dataset.adminTab === 'categories') {
+          renderAdminCategories();
+        }
       });
     });
 
@@ -312,6 +462,46 @@ if (typeof document !== 'undefined') {
       saveProduct(productData);
       hideProductForm();
       renderAdminProducts();
+      renderMenuGrid();
+    });
+
+    // Add Category Trigger
+    document.getElementById('add-category-btn').addEventListener('click', () => {
+      showCategoryForm();
+    });
+
+    // Close Category Form modal triggers
+    document.getElementById('close-category-form-modal').addEventListener('click', hideCategoryForm);
+    document.getElementById('cancel-category-form').addEventListener('click', hideCategoryForm);
+
+    // Category form submission
+    document.getElementById('category-edit-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const editId = document.getElementById('edit-category-id-hidden').value;
+      const idInput = document.getElementById('category-id-input').value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      
+      const nameTr = document.getElementById('category-name-tr').value;
+      const nameEn = document.getElementById('category-name-en').value || nameTr;
+      const nameRu = document.getElementById('category-name-ru').value || nameTr;
+
+      const isEdit = !!editId;
+      const id = isEdit ? editId : idInput;
+
+      const categoryData = {
+        id,
+        isEdit,
+        translations: {
+          tr: nameTr,
+          en: nameEn,
+          ru: nameRu
+        }
+      };
+
+      saveCategory(categoryData);
+      hideCategoryForm();
+      renderAdminCategories();
+      renderCategoryTabs();
       renderMenuGrid();
     });
   });

@@ -504,5 +504,109 @@ if (typeof document !== 'undefined') {
       renderCategoryTabs();
       renderMenuGrid();
     });
+
+    // ================= BACKUP & QR CODE ACTIONS =================
+
+    // Export JSON file
+    document.getElementById('export-json-btn').addEventListener('click', () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.menuData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "tek_durumcu_memo_menu.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    });
+
+    // Import JSON file
+    const fileInput = document.getElementById('import-file-input');
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const importedData = JSON.parse(event.target.result);
+          if (importedData && importedData.categories && importedData.items) {
+            state.menuData = importedData;
+            saveState();
+            window.location.reload();
+          } else {
+            alert(state.lang === 'tr' ? 'Geçersiz veri yapısı!' : 'Invalid data structure!');
+          }
+        } catch (err) {
+          alert(state.lang === 'tr' ? 'JSON ayrıştırma hatası!' : 'JSON parse error!');
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // Reset Database back to defaults
+    document.getElementById('reset-db-btn').addEventListener('click', () => {
+      const confirmMsg = UI_STRINGS[state.lang].resetConfirm;
+      if (confirm(confirmMsg)) {
+        localStorage.removeItem('memo_menu_data');
+        window.location.reload();
+      }
+    });
+
+    // QR Code instance manager
+    let qrCodeInstance = null;
+
+    function generateQRCode(url) {
+      const container = document.getElementById('qrcode');
+      container.innerHTML = ''; // Clear previous
+      qrCodeInstance = new QRCode(container, {
+        text: url,
+        width: 256,
+        height: 256,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+    }
+
+    // QR Modal Trigger
+    const qrModal = document.getElementById('qr-modal');
+    document.getElementById('admin-qr-btn').addEventListener('click', () => {
+      const defaultUrl = window.location.href;
+      document.getElementById('qr-url-input').value = defaultUrl;
+      generateQRCode(defaultUrl);
+      qrModal.classList.add('show');
+    });
+
+    document.getElementById('close-qr-modal').addEventListener('click', () => {
+      qrModal.classList.remove('show');
+    });
+
+    document.getElementById('btn-generate-qr').addEventListener('click', () => {
+      const url = document.getElementById('qr-url-input').value;
+      if (url) {
+        generateQRCode(url);
+      }
+    });
+
+    // Download QR Code image
+    document.getElementById('download-qr-btn').addEventListener('click', () => {
+      const canvas = document.querySelector('#qrcode canvas');
+      const img = document.querySelector('#qrcode img');
+      let dataUrl = '';
+      
+      if (canvas) {
+        dataUrl = canvas.toDataURL("image/png");
+      } else if (img) {
+        dataUrl = img.src;
+      }
+      
+      if (dataUrl) {
+        const link = document.createElement('a');
+        link.download = 'memo_menu_qrcode.png';
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    });
   });
 }

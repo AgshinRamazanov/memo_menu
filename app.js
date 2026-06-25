@@ -242,12 +242,64 @@ export function checkIsOpen(currentHour, currentMinute) {
   return true;
 }
 
-// Save dynamic menuState to local storage
-export function saveState() {
+// Save dynamic menuState to local storage and sync to Redis if PIN is provided
+export async function saveState(pin = null) {
   if (typeof localStorage !== 'undefined') {
     localStorage.setItem('memo_menu_data', JSON.stringify(state.menuData));
   }
+  
+  if (pin && typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+    try {
+      const response = await fetch('/api/menu', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          pin: pin,
+          menuData: state.menuData
+        })
+      });
+      if (!response.ok) {
+        const errData = await response.json();
+        console.error('Failed to sync state to server:', errData.error);
+        alert('Sunucu eşitleme hatası: ' + errData.error);
+      }
+    } catch (err) {
+      console.error('Failed to connect to backend api:', err);
+    }
+  }
 }
+
+// Fetch live menu data from Redis and refresh the DOM
+export async function fetchLiveMenu() {
+  if (typeof window === 'undefined' || typeof fetch === 'undefined') return;
+  try {
+    const res = await fetch('/api/menu');
+    const data = await res.json();
+    if (data && data.menuData) {
+      state.menuData = data.menuData;
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('memo_menu_data', JSON.stringify(state.menuData));
+      }
+      renderCategoryTabs();
+      renderMenuGrid();
+      
+      // Re-render admin lists if they are open
+      const adminProducts = document.getElementById('admin-products-list');
+      if (adminProducts && window.renderAdminProducts) {
+        window.renderAdminProducts();
+      }
+      const adminCategories = document.getElementById('admin-categories-list');
+      if (adminCategories && window.renderAdminCategories) {
+        window.renderAdminCategories();
+      }
+    }
+  } catch (err) {
+    console.error('Failed to fetch live menu data from Redis:', err);
+  }
+}
+
 
 // ================= RENDER FUNCTIONS =================
 
@@ -514,6 +566,9 @@ if (typeof document !== 'undefined') {
 
     // Initialize UI strings
     renderLanguageStrings();
+
+    // Fetch live database updates from Redis
+    fetchLiveMenu();
 
     // Initialize Lucide Icons
     lucide.createIcons();

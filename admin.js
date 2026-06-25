@@ -1,4 +1,8 @@
 import { state, saveState, renderMenuGrid, renderCategoryTabs, getTranslation, UI_STRINGS } from './app.js';
+import { DEFAULT_MENU_DATA } from './data.js';
+
+// ================= GLOBAL STATE =================
+let authenticatedPin = '';
 
 // ================= ADMIN HELPERS & ACTIONS =================
 
@@ -11,7 +15,11 @@ function generateId(nameTr) {
 
 // Check PIN and toggle authorization state
 export function verifyPin(pin) {
-  return pin === "1234";
+  const isValid = pin === "1234";
+  if (isValid) {
+    authenticatedPin = pin;
+  }
+  return isValid;
 }
 
 // Add a new product or update an existing one
@@ -33,13 +41,13 @@ export function saveProduct(productData) {
     items.push(newProduct);
   }
   
-  saveState();
+  saveState(authenticatedPin);
 }
 
 // Delete a product
 export function deleteProduct(productId) {
   state.menuData.items = state.menuData.items.filter(i => i.id !== productId);
-  saveState();
+  saveState(authenticatedPin);
 }
 
 // Toggle product active status
@@ -47,7 +55,7 @@ export function toggleProductStatus(productId) {
   const item = state.menuData.items.find(i => i.id === productId);
   if (item) {
     item.active = !item.active;
-    saveState();
+    saveState(authenticatedPin);
   }
   return item;
 }
@@ -71,7 +79,7 @@ export function saveCategory(categoryData) {
     });
   }
 
-  saveState();
+  saveState(authenticatedPin);
 }
 
 // Delete a category and reassociate products
@@ -95,7 +103,7 @@ export function deleteCategory(categoryId) {
     });
   }
 
-  saveState();
+  saveState(authenticatedPin);
 }
 
 // ================= DOM HANDLERS =================
@@ -341,6 +349,32 @@ function hideCategoryForm() {
   document.getElementById('category-form-modal').classList.remove('show');
 }
 
+export async function resetState(pin) {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.removeItem('memo_menu_data');
+  }
+  if (pin && typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+    try {
+      const response = await fetch('/api/menu', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          pin: pin,
+          menuData: DEFAULT_MENU_DATA
+        })
+      });
+      if (!response.ok) {
+        const errData = await response.json();
+        alert('Sunucu sıfırlama hatası: ' + errData.error);
+      }
+    } catch (err) {
+      console.error('Failed to reset state on server:', err);
+    }
+  }
+}
+
 // ================= LIFE CYCLE ATTACHMENT =================
 
 if (typeof document !== 'undefined') {
@@ -525,12 +559,12 @@ if (typeof document !== 'undefined') {
       if (!file) return;
       
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         try {
           const importedData = JSON.parse(event.target.result);
           if (importedData && importedData.categories && importedData.items) {
             state.menuData = importedData;
-            saveState();
+            await saveState(authenticatedPin);
             window.location.reload();
           } else {
             alert(state.lang === 'tr' ? 'Geçersiz veri yapısı!' : 'Invalid data structure!');
@@ -543,10 +577,10 @@ if (typeof document !== 'undefined') {
     });
 
     // Reset Database back to defaults
-    document.getElementById('reset-db-btn').addEventListener('click', () => {
+    document.getElementById('reset-db-btn').addEventListener('click', async () => {
       const confirmMsg = UI_STRINGS[state.lang].resetConfirm;
       if (confirm(confirmMsg)) {
-        localStorage.removeItem('memo_menu_data');
+        await resetState(authenticatedPin);
         window.location.reload();
       }
     });
@@ -609,4 +643,9 @@ if (typeof document !== 'undefined') {
       }
     });
   });
+}
+
+if (typeof window !== 'undefined') {
+  window.renderAdminProducts = renderAdminProducts;
+  window.renderAdminCategories = renderAdminCategories;
 }

@@ -7,7 +7,7 @@ const redis = new Redis({
   token: process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
 });
 
-const DEFAULT_PIN = "1234";
+const DEFAULT_PIN = "memotek7073";
 
 export default async function handler(req, res) {
   // CORS configuration

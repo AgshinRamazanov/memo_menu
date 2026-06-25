@@ -15,7 +15,7 @@ function generateId(nameTr) {
 
 // Check PIN and toggle authorization state
 export function verifyPin(pin) {
-  const isValid = pin === "1234";
+  const isValid = pin === "memotek7073";
   if (isValid) {
     authenticatedPin = pin;
   }

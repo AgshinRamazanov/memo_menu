@@ -51,7 +51,7 @@ test('checkIsOpen determines if restaurant is open based on hours (08:00 - 04:00
 });
 
 test('verifyPin checks PIN successfully', () => {
-  assert.strictEqual(verifyPin('1234'), true);
+  assert.strictEqual(verifyPin('memotek7073'), true);
   assert.strictEqual(verifyPin('4321'), false);
 });
 

@@ -1,32 +1,26 @@
-import { Redis } from '@upstash/redis';
+import Redis from 'ioredis';
 
 const DEFAULT_PIN = "memotek7073";
 
 let redisClient = null;
 
-function getRedisClient(envStatus) {
+function getRedisClient() {
   if (redisClient) return redisClient;
 
-  const url = process.env.KV_REST_API_URL || 
-              process.env.STORAGE_REST_API_URL || 
-              process.env.UPSTASH_REDIS_REST_URL || 
-              process.env.STORAGE_UPSTASH_REDIS_REST_URL ||
-              process.env.STORAGE_REST_URL;
+  // Look for REDIS_URL first, then fall back to Vercel KV URL variations
+  const connectionString = process.env.REDIS_URL || 
+                           process.env.KV_URL || 
+                           process.env.STORAGE_URL;
 
-  const token = process.env.KV_REST_API_TOKEN || 
-                process.env.STORAGE_REST_API_TOKEN || 
-                process.env.UPSTASH_REDIS_REST_TOKEN || 
-                process.env.STORAGE_UPSTASH_REDIS_REST_TOKEN ||
-                process.env.STORAGE_REST_TOKEN;
-
-  if (!url || !token) {
+  if (!connectionString) {
     const availableKeys = Object.keys(process.env).filter(k => 
       k.includes('URL') || k.includes('TOKEN') || k.includes('REDIS') || k.includes('KV') || k.includes('STORAGE')
     );
-    throw new Error(`Missing Redis URL or Token. Available keys: ${JSON.stringify(availableKeys)}`);
+    throw new Error(`Missing REDIS_URL or KV_URL. Available keys: ${JSON.stringify(availableKeys)}`);
   }
 
-  redisClient = new Redis({ url, token });
+  // Initialize standard TCP-based ioredis client
+  redisClient = new Redis(connectionString);
   return redisClient;
 }
 
@@ -42,10 +36,7 @@ export default async function handler(req, res) {
   }
 
   const envStatus = {
-    KV_REST_API_URL: !!process.env.KV_REST_API_URL,
-    STORAGE_REST_API_URL: !!process.env.STORAGE_REST_API_URL,
-    UPSTASH_REDIS_REST_URL: !!process.env.UPSTASH_REDIS_REST_URL,
-    STORAGE_UPSTASH_REDIS_REST_URL: !!process.env.STORAGE_UPSTASH_REDIS_REST_URL,
+    REDIS_URL: !!process.env.REDIS_URL,
     KV_URL: !!process.env.KV_URL,
     STORAGE_URL: !!process.env.STORAGE_URL,
   };
@@ -53,9 +44,10 @@ export default async function handler(req, res) {
   // GET handler: retrieve menu from Redis database
   if (req.method === 'GET') {
     try {
-      const redis = getRedisClient(envStatus);
-      const menuData = await redis.get('memo_menu_data');
-      return res.status(200).json({ menuData: menuData || null });
+      const redis = getRedisClient();
+      const rawData = await redis.get('memo_menu_data');
+      const menuData = rawData ? JSON.parse(rawData) : null;
+      return res.status(200).json({ menuData });
     } catch (error) {
       console.error('Redis GET error:', error);
       return res.status(500).json({ 
@@ -78,8 +70,8 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Invalid menu data structure' });
       }
 
-      const redis = getRedisClient(envStatus);
-      await redis.set('memo_menu_data', menuData);
+      const redis = getRedisClient();
+      await redis.set('memo_menu_data', JSON.stringify(menuData));
       return res.status(200).json({ success: true });
     } catch (error) {
       console.error('Redis SET error:', error);

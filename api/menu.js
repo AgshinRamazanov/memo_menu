@@ -20,6 +20,14 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  const envStatus = {
+    KV_REST_API_URL: !!process.env.KV_REST_API_URL,
+    STORAGE_REST_API_URL: !!process.env.STORAGE_REST_API_URL,
+    UPSTASH_REDIS_REST_URL: !!process.env.UPSTASH_REDIS_REST_URL,
+    KV_URL: !!process.env.KV_URL,
+    STORAGE_URL: !!process.env.STORAGE_URL,
+  };
+
   // GET handler: retrieve menu from Redis database
   if (req.method === 'GET') {
     try {
@@ -27,7 +35,9 @@ export default async function handler(req, res) {
       return res.status(200).json({ menuData: menuData || null });
     } catch (error) {
       console.error('Redis GET error:', error);
-      return res.status(500).json({ error: 'Failed to retrieve menu data from Redis' });
+      return res.status(500).json({ 
+        error: `Failed to retrieve menu data: ${error.message}. Env status: ${JSON.stringify(envStatus)}` 
+      });
     }
   }
 
@@ -49,7 +59,9 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true });
     } catch (error) {
       console.error('Redis SET error:', error);
-      return res.status(500).json({ error: 'Failed to save menu data to Redis' });
+      return res.status(500).json({ 
+        error: `Failed to save menu data to Redis: ${error.message}. Env status: ${JSON.stringify(envStatus)}` 
+      });
     }
   }
 

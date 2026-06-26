@@ -164,7 +164,7 @@ export const DEFAULT_MENU_DATA = {
       translations: {
         tr: { name: "Tavuk Şiş Dürüm (140 gr)", description: "Lavaş içerisinde marine tavuk şiş, domates, marul ve soğan" },
         en: { name: "Chicken Skewer Wrap (140g)", description: "Marinated chicken skewer wrapped in flatbread with tomato, lettuce, and onion" },
-        ru: { name: "Куриный шашлык в лаваше с помидорами, салатом и луком" }
+        ru: { name: "Куриный Шашлык Дюрюм (140 г)", description: "Куриный шашлык в лаваше с помидорами, салатом и луком" }
       }
     },
     {
@@ -175,7 +175,7 @@ export const DEFAULT_MENU_DATA = {
       translations: {
         tr: { name: "Çöp Şiş Dürüm (75 gr)", description: "Lavaş içerisinde marine edilmiş dana eti çöp şiş, domates, marul ve soğan" },
         en: { name: "Stick Skewer Wrap (75g)", description: "Marinated cubed beef skewer wrapped in flatbread with tomato, lettuce, and onion" },
-        ru: { name: "Шашлык из говядины (чоп-шиш) в лаваше с помидорами, салатом и луком" }
+        ru: { name: "Дюрюм с шашлыком (75 г)", description: "Шашлык из говядины (чоп-шиш) в лаваше с помидорами, салатом и луком" }
       }
     },
     {
@@ -186,7 +186,7 @@ export const DEFAULT_MENU_DATA = {
       translations: {
         tr: { name: "Ciğer Şiş Dürüm (90 gr)", description: "Lavaş içerisinde marine edilmiş kuzu ciğeri şiş, domates, marul ve soğan" },
         en: { name: "Liver Skewer Wrap (90g)", description: "Marinated lamb liver skewer wrapped in flatbread with tomato, lettuce, and onion" },
-        ru: { name: "Шашлык из бараньей печени в лаваше с помидорами, салатом и луком" }
+        ru: { name: "Печеночный Дюрюм (90 г)", description: "Шашлык из бараньей печени в лаваше с помидорами, салатом и луком" }
       }
     },
 

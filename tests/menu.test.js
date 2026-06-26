@@ -17,6 +17,29 @@ test('DEFAULT_MENU_DATA structure validity', () => {
     assert.ok(item.translations.tr);
     assert.ok(item.translations.tr.name);
   });
+
+  // Verify new categories and removal of 'izgaralar'
+  const catIds = DEFAULT_MENU_DATA.categories.map(c => c.id);
+  assert.ok(catIds.includes('pideler'), 'Category pideler must exist');
+  assert.ok(!catIds.includes('izgaralar'), 'Category izgaralar must be removed');
+
+  // Verify specific new items
+  const itemIds = DEFAULT_MENU_DATA.items.map(i => i.id);
+  assert.ok(itemIds.includes('kusbasili-pide'), 'kusbasili-pide must exist');
+  assert.ok(itemIds.includes('cig-kofte'), 'cig-kofte must exist');
+  assert.ok(itemIds.includes('turk-kahvesi'), 'turk-kahvesi must exist');
+  assert.ok(!itemIds.includes('dimes-karisik'), 'dimes-karisik must be consolidated');
+  assert.ok(!itemIds.includes('dimes-seftali'), 'dimes-seftali must be consolidated');
+  assert.ok(!itemIds.includes('meysu-cola-1l'), 'meysu-cola-1l must be removed');
+
+  // Verify updated prices and names
+  const adanaKebap = DEFAULT_MENU_DATA.items.find(i => i.id === 'adana-kebap');
+  assert.strictEqual(adanaKebap.price, 590);
+  assert.strictEqual(adanaKebap.translations.tr.name, 'Adana Kebap (170 gr)');
+
+  const adanaDurum = DEFAULT_MENU_DATA.items.find(i => i.id === 'adana-durum');
+  assert.strictEqual(adanaDurum.price, 330);
+  assert.strictEqual(adanaDurum.translations.tr.name, 'Adana Dürüm (85 gr)');
 });
 
 test('Translation fallback returns target language or defaults to Turkish', () => {

@@ -3,6 +3,7 @@ import { DEFAULT_MENU_DATA } from './data.js';
 
 // ================= GLOBAL STATE =================
 let authenticatedPin = '';
+let adminSearchQuery = '';
 
 // ================= ADMIN HELPERS & ACTIONS =================
 
@@ -116,8 +117,23 @@ export function renderAdminProducts() {
   const categories = state.menuData.categories;
   const t = UI_STRINGS[state.lang];
 
+  // Filter items by search query
+  let filteredItems = items;
+  const query = adminSearchQuery.toLowerCase().trim();
+  if (query) {
+    filteredItems = filteredItems.filter(item => {
+      const name = getTranslation(item, state.lang, 'name').toLowerCase();
+      const desc = getTranslation(item, state.lang, 'description').toLowerCase();
+      
+      const trName = getTranslation(item, 'tr', 'name').toLowerCase();
+      const trDesc = getTranslation(item, 'tr', 'description').toLowerCase();
+      
+      return name.includes(query) || desc.includes(query) || trName.includes(query) || trDesc.includes(query);
+    });
+  }
+
   let html = '';
-  items.forEach(item => {
+  filteredItems.forEach(item => {
     const name = getTranslation(item, state.lang, 'name');
     const itemCat = categories.find(c => c.id === item.category);
     const catName = itemCat ? (itemCat.translations[state.lang] || itemCat.translations['tr']) : t.otherCategory;
@@ -385,12 +401,27 @@ if (typeof document !== 'undefined') {
     const pinInput = document.getElementById('pin-input');
     const authError = document.getElementById('auth-error');
 
+    // Admin search input change listener
+    const adminSearchInput = document.getElementById('admin-product-search');
+    if (adminSearchInput) {
+      adminSearchInput.addEventListener('input', (e) => {
+        adminSearchQuery = e.target.value;
+        renderAdminProducts();
+      });
+    }
+
     // Admin Login Trigger
     document.getElementById('admin-login-btn').addEventListener('click', () => {
       pinInput.value = '';
       authError.style.display = 'none';
       authModal.classList.add('show');
       setTimeout(() => pinInput.focus(), 200);
+
+      // Clear admin search
+      adminSearchQuery = '';
+      if (adminSearchInput) {
+        adminSearchInput.value = '';
+      }
     });
 
     // Close Auth modal

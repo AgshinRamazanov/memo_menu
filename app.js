@@ -78,7 +78,8 @@ export const UI_STRINGS = {
     lblFormCatId: "Kategori Kodu (Küçük harf, boşluksuz ID)",
     lblFormCatName: "Kategori Adı",
     lblFormSave: "Kaydet",
-    otherCategory: "Diğer"
+    otherCategory: "Diğer",
+    adminSearchPlaceholder: "Ürün ara..."
   },
   en: {
     cuisine: "Kebab Restaurant",
@@ -146,7 +147,8 @@ export const UI_STRINGS = {
     lblFormCatId: "Category Code (Lowercase, no spaces)",
     lblFormCatName: "Category Name",
     lblFormSave: "Save",
-    otherCategory: "Other"
+    otherCategory: "Other",
+    adminSearchPlaceholder: "Search products..."
   },
   ru: {
     cuisine: "Кебабная",
@@ -214,7 +216,8 @@ export const UI_STRINGS = {
     lblFormCatId: "Код категории (строчные буквы, без пробелов)",
     lblFormCatName: "Название категории",
     lblFormSave: "Сохранить",
-    otherCategory: "Другое"
+    otherCategory: "Другое",
+    adminSearchPlaceholder: "Поиск товаров..."
   }
 };
 
@@ -387,6 +390,12 @@ export function renderLanguageStrings() {
   document.getElementById('cancel-category-form').innerText = t.btnCancel;
   document.getElementById('btn-category-save').innerText = t.lblFormSave;
   
+  // Admin search input translation
+  const adminSearch = document.getElementById('admin-product-search');
+  if (adminSearch) {
+    adminSearch.placeholder = t.adminSearchPlaceholder;
+  }
+
   // Trigger banners and active tags update
   updateOpeningStatus();
   renderCategoryTabs();

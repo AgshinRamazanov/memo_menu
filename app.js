@@ -4,7 +4,7 @@ import { DEFAULT_MENU_DATA } from './data.js';
 const isBrowser = typeof localStorage !== 'undefined';
 export const state = {
   lang: isBrowser ? (localStorage.getItem('memo_menu_lang') || 'tr') : 'tr',
-  theme: isBrowser ? (localStorage.getItem('memo_menu_theme') || 'dark') : 'dark',
+  theme: isBrowser ? (localStorage.getItem('memo_menu_theme') || 'light') : 'light',
   activeCategory: 'all',
   searchQuery: '',
   menuData: isBrowser ? (JSON.parse(localStorage.getItem('memo_menu_data')) || DEFAULT_MENU_DATA) : DEFAULT_MENU_DATA

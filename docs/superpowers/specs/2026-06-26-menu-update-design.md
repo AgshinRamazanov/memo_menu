@@ -57,7 +57,7 @@ We update names to include weights and update prices:
   * Price: **350.00 TL** (from 420.00)
   * Turkish: `Çöp Şiş Dürüm (75 gr)`
   * English: `Stick Skewer Wrap (75g)`
-  * Russian: `Чоп Шиш Дюрюм (75 г)`
+  * Russian: `Дюрюм с шашлыком(75 г)`
 * **Ciğer Şiş Dürüm (90 gr)** (`ciger-sis-durum`):
   * Price: **350.00 TL** (from 420.00)
   * Turkish: `Ciğer Şiş Dürüm (90 gr)`
@@ -72,24 +72,24 @@ We update names to include weights and update prices:
   * Russian: `Пиде с кусочками мяса (100 г)` (Desc: Подается с лавашом, запеченным перцем и помидорами)
 * **Kaşarlı Pide (100 gr)** (`kasarli-pide`):
   * Price: **430.00 TL**
-  * Turkish: `Kaşarlı Pide (100 gr)` (Desc: Eritilmiş kaşar peyniri ile)
-  * English: `Cheddar Cheese Pita (100g)` (Desc: With melted kasar (Turkish cheddar) cheese)
-  * Russian: `Пиде с сыром кашар (100 г)` (Desc: С расплавленным сыром кашар)
+  * Turkish: `Kaşarlı Pide (100 gr)`
+  * English: `Cheddar Cheese Pita (100g)`
+  * Russian: `Пиде с сыром кашар (100 г)`
 * **Kavurmalı Pide (100 gr)** (`kavurmali-pide`):
   * Price: **550.00 TL**
-  * Turkish: `Kavurmalı Pide (100 gr)` (Desc: Kavrulmuş dana eti ve eritilmiş kaşar peyniri ile)
-  * English: `Roasted Meat Pita (100g)` (Desc: With pan-roasted beef and melted kasar cheese)
-  * Russian: `Пиде с обжаренным мясом (100 г)` (Desc: С обжаренной говядиной и сыром кашар)
+  * Turkish: `Kavurmalı Pide (100 gr)`
+  * English: `Roasted Meat Pita (100g)`
+  * Russian: `Пиде с обжаренным мясом (100 г)`
 * **Karışık Pide (100 gr)** (`karisik-pide`):
   * Price: **520.00 TL**
-  * Turkish: `Karışık Pide (100 gr)` (Desc: Kavurma, kuşbaşı et ve eritilmiş kaşar peyniri ile)
-  * English: `Mixed Pita (100g)` (Desc: With roasted beef, cubed meat, and melted kasar cheese)
-  * Russian: `Ассорти Пиде (100 г)` (Desc: С обжаренной говядиной, кусочками мяса и сыром кашар)
+  * Turkish: `Karışık Pide (100 gr)`
+  * English: `Mixed Pita (100g)`
+  * Russian: `Ассорти Пиде (100 г)`
 * **Lahmacun (100 gr)** (`lahmacun`):
   * Price: **150.00 TL**
-  * Turkish: `Lahmacun (100 gr)` (Desc: Kıymalı özel harç ile, yanında yeşillik ve limon)
-  * English: `Lahmacun (100g)` (Desc: With minced meat topping, served with greens and lemon)
-  * Russian: `Лахмаджун (100 г)` (Desc: С мясным фаршем и специями, подается с зеленью и лимоном)
+  * Turkish: `Lahmacun (100 gr)`
+  * English: `Lahmacun (100g)`
+  * Russian: `Лахмаджун (100 г)`
 
 ### 3.3. Kebap ve Ciğer Çeşitleri (`kebaplar`)
 Move grill items (`izgaralar`) here and update all names, weights, and prices:
@@ -215,9 +215,9 @@ We consolidate and update the drinks:
 * **Su** (`su`): Price **20.00 TL** (from 25.00)
 * **Türk Kahvesi / Turk Coffee** (`turk-kahvesi`) [NEW]:
   * Price: **70.00 TL**
-  * Turkish: `Türk Kahvesi` (Desc: Geleneksel Türk kahvesi)
-  * English: `Turk Coffee` (Desc: Traditional Turkish coffee)
-  * Russian: `Турецкий кофе` (Desc: Традиционный турецкий кофе)
+  * Turkish: `Türk Kahvesi`
+  * English: `Turk Coffee`
+  * Russian: `Турецкий кофе`
 * *Note: Remove `meysu-cola-1l` from the database as it is not present in the new physical menu.*
 
 ---

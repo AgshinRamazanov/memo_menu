@@ -1,4 +1,4 @@
-import { state, saveState, renderMenuGrid, renderCategoryTabs, getTranslation, UI_STRINGS } from './app.js';
+import { state, saveState, renderMenuGrid, renderCategoryTabs, getTranslation, UI_STRINGS, renderLanguageStrings } from './app.js';
 import { DEFAULT_MENU_DATA } from './data.js';
 
 // ================= GLOBAL STATE =================
@@ -434,6 +434,16 @@ if (typeof document !== 'undefined') {
       e.preventDefault();
       if (verifyPin(pinInput.value)) {
         authModal.classList.remove('show');
+
+        // Force language to Turkish when entering admin panel
+        state.lang = 'tr';
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('memo_menu_lang', 'tr');
+        }
+        document.querySelector('.lang-option.active')?.classList.remove('active');
+        document.querySelector('.lang-option[data-lang="tr"]')?.classList.add('active');
+        renderLanguageStrings();
+
         renderAdminProducts();
         renderAdminCategories();
         adminModal.classList.add('show');

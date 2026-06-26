@@ -140,9 +140,9 @@ export const DEFAULT_MENU_DATA = {
       price: 330.00,
       active: true,
       translations: {
-        tr: { name: "Adana Dürüm (85 gr)", description: "Domates, kıvırcık marul, isteğe göre soğan" },
-        en: { name: "Adana Wrap (85g)", description: "Tomato, curly lettuce, onion optional" },
-        ru: { name: "Адана Дюрюм (85 г)", description: "Помидор, салат латук, лук по желанию" }
+        tr: { name: "Adana Dürüm (85 gr)", description: "Lavaş içerisinde zırh kıyması Adana kebap, domates, marul ve soğan" },
+        en: { name: "Adana Wrap (85g)", description: "Adana kebab (minced lamb & beef) wrapped in flatbread with tomato, lettuce, and onion" },
+        ru: { name: "Адана Дюрюм (85 г)", description: "Люля-кебаб Адана (фарш на ноже) в лаваше с помидорами, салатом и луком" }
       }
     },
     {
@@ -151,9 +151,9 @@ export const DEFAULT_MENU_DATA = {
       price: 330.00,
       active: true,
       translations: {
-        tr: { name: "Urfa Dürüm (85 gr)", description: "Domates, kıvırcık marul, isteğe göre soğan" },
-        en: { name: "Urfa Wrap (85g)", description: "Tomato, curly lettuce, onion optional" },
-        ru: { name: "Урфа Дюрюм (85 г)", description: "Помидор, салат латук, лук по желанию" }
+        tr: { name: "Urfa Dürüm (85 gr)", description: "Lavaş içerisinde acısız zırh kıyması Urfa kebap, domates, marul ve soğan" },
+        en: { name: "Urfa Wrap (85g)", description: "Urfa kebab (non-spicy minced meat) wrapped in flatbread with tomato, lettuce, and onion" },
+        ru: { name: "Урфа Дюрюм (85 г)", description: "Люля-кебаб Урфа (неострый фарш) в лаваше с помидорами, салатом и луком" }
       }
     },
     {
@@ -162,9 +162,9 @@ export const DEFAULT_MENU_DATA = {
       price: 300.00,
       active: true,
       translations: {
-        tr: { name: "Tavuk Şiş Dürüm (140 gr)", description: "Domates, kıvırcık marul" },
-        en: { name: "Chicken Skewer Wrap (140g)", description: "Tomato, curly lettuce" },
-        ru: { name: "Куриный Шашлык Дюрюм (140 г)", description: "Помидоры, салат латук" }
+        tr: { name: "Tavuk Şiş Dürüm (140 gr)", description: "Lavaş içerisinde marine tavuk şiş, domates, marul ve soğan" },
+        en: { name: "Chicken Skewer Wrap (140g)", description: "Marinated chicken skewer wrapped in flatbread with tomato, lettuce, and onion" },
+        ru: { name: "Куриный шашлык в лаваше с помидорами, салатом и луком" }
       }
     },
     {
@@ -173,9 +173,9 @@ export const DEFAULT_MENU_DATA = {
       price: 350.00,
       active: true,
       translations: {
-        tr: { name: "Çöp Şiş Dürüm (75 gr)", description: "Domates, kıvırcık marul, isteğe göre soğan" },
-        en: { name: "Stick Skewer Wrap (75g)", description: "Tomato, curly lettuce, onion optional" },
-        ru: { name: "Дюрюм с шашлыком (75 г)", description: "Помидор, салат латук, лук по желанию" }
+        tr: { name: "Çöp Şiş Dürüm (75 gr)", description: "Lavaş içerisinde marine edilmiş dana eti çöp şiş, domates, marul ve soğan" },
+        en: { name: "Stick Skewer Wrap (75g)", description: "Marinated cubed beef skewer wrapped in flatbread with tomato, lettuce, and onion" },
+        ru: { name: "Шашлык из говядины (чоп-шиш) в лаваше с помидорами, салатом и луком" }
       }
     },
     {
@@ -184,9 +184,9 @@ export const DEFAULT_MENU_DATA = {
       price: 350.00,
       active: true,
       translations: {
-        tr: { name: "Ciğer Şiş Dürüm (90 gr)", description: "Domates, kıvırcık marul, isteğe göre soğan" },
-        en: { name: "Liver Skewer Wrap (90g)", description: "Tomato, curly lettuce, onion optional" },
-        ru: { name: "Печеночный Дюрюм (90 г)", description: "Помидор, салат латук, лук по желанию" }
+        tr: { name: "Ciğer Şiş Dürüm (90 gr)", description: "Lavaş içerisinde marine edilmiş kuzu ciğeri şiş, domates, marul ve soğan" },
+        en: { name: "Liver Skewer Wrap (90g)", description: "Marinated lamb liver skewer wrapped in flatbread with tomato, lettuce, and onion" },
+        ru: { name: "Шашлык из бараньей печени в лаваше с помидорами, салатом и луком" }
       }
     },
 
@@ -254,9 +254,9 @@ export const DEFAULT_MENU_DATA = {
       price: 120.00,
       active: true,
       translations: {
-        tr: { name: "Mercimek Çorbası", description: "Günlük hazırlanmaktadır." },
-        en: { name: "Lentil Soup", description: "Freshly prepared daily." },
-        ru: { name: "Чечевичный суп", description: "Готовится ежедневно." }
+        tr: { name: "Mercimek Çorbası", description: "Kırmızı mercimek, soğan, havuç, tereyağı, un ve baharatlar" },
+        en: { name: "Lentil Soup", description: "Red lentils, onion, carrot, butter, flour, and spices" },
+        ru: { name: "Чечевичный суп", description: "Красная чечевица, лук, морковь, сливочное масло, мука и специи" }
       }
     },
     {
@@ -265,9 +265,9 @@ export const DEFAULT_MENU_DATA = {
       price: 150.00,
       active: true,
       translations: {
-        tr: { name: "Şehriyeli Tavuk Suyu Çorbası", description: "Şehriye, havuç" },
-        en: { name: "Chicken Soup with Vermicelli", description: "Noodles, carrots" },
-        ru: { name: "Куриный суп с вермишелью", description: "Вермишель, морковь" }
+        tr: { name: "Şehriyeli Tavuk Suyu Çorbası", description: "Didiklenmiş tavuk göğsü, tel şehriye, havuç ve tavuk suyu" },
+        en: { name: "Chicken Soup with Vermicelli", description: "Shredded chicken breast, vermicelli, carrot, and chicken broth" },
+        ru: { name: "Куриный суп с вермишелью", description: "Измельченная куриная грудка, вермишель, морковь и куриный бульон" }
       }
     },
     {
@@ -276,9 +276,9 @@ export const DEFAULT_MENU_DATA = {
       price: 120.00,
       active: true,
       translations: {
-        tr: { name: "Ezogelin Çorbası", description: "Limon, ekmek ile" },
-        en: { name: "Ezogelin Soup", description: "Served with lemon and bread" },
-        ru: { name: "Суп Эзогелин", description: "Подается с лимоном и хлебом" }
+        tr: { name: "Ezogelin Çorbası", description: "Kırmızı mercimek, bulgur, pirinç, soğan, salça, nane ve baharatlar" },
+        en: { name: "Ezogelin Soup", description: "Red lentils, bulgur, rice, onion, tomato paste, mint, and spices" },
+        ru: { name: "Суп Эзогелин", description: "Красная чечевица, булгур, рис, лук, томатная паста, мята и специи" }
       }
     },
     {
@@ -287,9 +287,9 @@ export const DEFAULT_MENU_DATA = {
       price: 370.00,
       active: true,
       translations: {
-        tr: { name: "Beyran Çorbası", description: "Tek kişilik" },
-        en: { name: "Beyran Soup", description: "Single portion" },
-        ru: { name: "Суп Бейран", description: "На одну персону" }
+        tr: { name: "Beyran Çorbası", description: "Kuzu eti, pirinç, kemik suyu, sarımsak ve pul biber" },
+        en: { name: "Beyran Soup", description: "Shredded lamb, rice, bone broth, garlic, and red pepper flakes" },
+        ru: { name: "Суп Бейран", description: "Кусочки ягнятины, рис, костный бульон, чеснок и острый перец" }
       }
     },
     {
@@ -298,9 +298,9 @@ export const DEFAULT_MENU_DATA = {
       price: 370.00,
       active: true,
       translations: {
-        tr: { name: "Kelle Paça Çorbası", description: "Ezme, sarımsak, sirke, ekmek ile" },
-        en: { name: "Kelle Pacha Soup (Head and Trotter)", description: "Served with ezme, garlic sauce, vinegar, and bread" },
-        ru: { name: "Суп Келле Пача", description: "Подается с эзме, чесноком, уксусом и хлебом" }
+        tr: { name: "Kelle Paça Çorbası", description: "Kelle eti, paça eti, sarımsak ve kemik suyu" },
+        en: { name: "Kelle Pacha Soup (Head and Trotter)", description: "Sheep's head and trotter meat, garlic, and bone broth" },
+        ru: { name: "Суп Келле Пача", description: "Мясо бараньей головы и ножек, чеснок и костный бульон" }
       }
     },
 
@@ -311,9 +311,9 @@ export const DEFAULT_MENU_DATA = {
       price: 160.00,
       active: true,
       translations: {
-        tr: { name: "İçli Köfte", description: "Limon ile" },
-        en: { name: "Stuffed Meatballs", description: "Served with lemon" },
-        ru: { name: "Ичли Кофте (начиненные тефтели)", description: "Подается с лимоном" }
+        tr: { name: "İçli Köfte", description: "Bulgur hamuru dış kabuk; kıyma, soğan, ceviz ve baharat iç harcı ile" },
+        en: { name: "Stuffed Meatballs", description: "Bulgur shell stuffed with minced beef, onion, walnuts, and spices" },
+        ru: { name: "Ичли Кофте", description: "Оболочка из булгура с начинкой из говяжьего фарша, лука, грецких орехов и специй" }
       }
     },
     {
@@ -322,9 +322,9 @@ export const DEFAULT_MENU_DATA = {
       price: 80.00,
       active: true,
       translations: {
-        tr: { name: "Çiğ Köfte", description: "Yeşillik ve limon ile" },
-        en: { name: "Raw Meatballs (Chee Kofta)", description: "Served with greens and lemon" },
-        ru: { name: "Чиг Кофте", description: "Подается с зеленью и лимоном" }
+        tr: { name: "Çiğ Köfte", description: "İnce bulgur, isot, domates salçası, nar ekşisi, ceviz ve baharatlar" },
+        en: { name: "Raw Meatballs (Chee Kofta)", description: "Fine bulgur, isot pepper, tomato paste, pomegranate molasses, walnuts, and spices" },
+        ru: { name: "Чиг Кофте", description: "Мелкий булгур, перец исот, томатная паста, гранатовый соус, грецкие орехи и специи" }
       }
     },
     {
@@ -368,9 +368,9 @@ export const DEFAULT_MENU_DATA = {
       price: 160.00,
       active: true,
       translations: {
-        tr: { name: "Sütlaç Tatlısı", description: "Fındıklı" },
-        en: { name: "Rice Pudding Dessert", description: "Topped with hazelnuts" },
-        ru: { name: "Сютлач (рисовый пудинг)", description: "С фундуком" }
+        tr: { name: "Sütlaç Tatlısı", description: "Süt, pirinç, şeker, nişasta ve üstünde fındık parçaları" },
+        en: { name: "Rice Pudding Dessert", description: "Milk, rice, sugar, starch, topped with crushed hazelnuts" },
+        ru: { name: "Сютлач (рисовый пудинг)", description: "Молоко, рис, сахар, крахмал, посыпается дробленым фундуком" }
       }
     },
     {
@@ -379,9 +379,9 @@ export const DEFAULT_MENU_DATA = {
       price: 200.00,
       active: true,
       translations: {
-        tr: { name: "Künefe Tatlısı", description: "Fındık ile" },
-        en: { name: "Kunefe Dessert", description: "Topped with hazelnuts" },
-        ru: { name: "Кюнефе", description: "С фундуком" }
+        tr: { name: "Künefe Tatlısı", description: "Tel kadayıf, özel tuzsuz peynir, tereyağı, şerbet ve üstünde fındık" },
+        en: { name: "Kunefe Dessert", description: "Shredded wheat pastry, special unsalted cheese, butter, sweet syrup, topped with hazelnuts" },
+        ru: { name: "Кюнефе", description: "Тесто кадаиф, специальный несоленый сыр, сливочное масло, сладкий сироп, фундук" }
       }
     },
 
